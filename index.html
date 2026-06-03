@@ -30,7 +30,21 @@ button.light{background:#fff;color:var(--teal);border:1px solid #bdd1d5}.hint{ma
 #pAshour{top:900px;left: 80px;width:715px;min-height:150px;display:flex;align-items:center;justify-content:center;text-align: right; font-size:22px;line-height:2.1
 }
 @media(max-width:1050px){.app{grid-template-columns:1fr}.panel{position:static}#capture{scale:.42;margin-bottom:-760px}}
-@media(max-width:560px){body{padding:8px}#capture{scale:.31;margin-bottom:-930px}}
+@media(max-width:560px){
+  body{
+    padding:8px;
+  }
+
+  .preview-wrap{
+    justify-content:flex-start;
+    overflow-x:auto;
+  }
+
+  #capture{
+    scale:1;
+    margin-bottom:0;
+  }
+}
 </style></head><body>
 <main class="app"><section class="panel"><h1>منشئ تذكرة الأريب</h1>
 <div class="row"><div><label>النصاب</label><input id="nisab" value="١"></div><div><label>الأسبوع</label><input id="week" value="١"></div></div>
