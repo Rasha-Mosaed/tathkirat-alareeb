@@ -1,0 +1,221 @@
+<!doctype html><html lang="ar" dir="rtl"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>تذكرة الأريب</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Tajawal:wght@400;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--w:1080px;--h:1350px;--ink:#173f49;--teal:#24606e;--paper:#fbf4e7}
+*{box-sizing:border-box}body{margin:0;padding:18px;background:#e8dfcf;color:var(--ink);font-family:Tajawal,Arial,sans-serif}
+.app{max-width:1320px;margin:auto;display:grid;grid-template-columns:420px 1fr;gap:22px;align-items:start}
+.panel{background:#fff;border-radius:22px;padding:18px;box-shadow:0 12px 30px #0002;position:sticky;top:14px}
+h1{margin:0 0 10px;color:var(--teal);font-size:24px}label{display:block;margin:12px 0 6px;color:var(--teal);font-weight:800}
+input,textarea,select{width:100%;border:1px solid #c9d8db;border-radius:13px;padding:10px 12px;font-family:Amiri,serif;font-size:18px;line-height:1.9;color:var(--ink);outline:none;background:#fff}
+textarea{min-height:96px;resize:vertical}.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}.actions{margin-top:16px;display:flex;gap:9px;flex-wrap:wrap}
+button{border:0;border-radius:999px;padding:11px 16px;background:var(--teal);color:#fff;font-family:Tajawal,sans-serif;font-weight:800;cursor:pointer}
+button.light{background:#fff;color:var(--teal);border:1px solid #bdd1d5}.hint{margin:12px 0 0;font-size:14px;color:#667;line-height:1.7}
+.preview-wrap{display:flex;justify-content:center;overflow:auto;padding-bottom:30px}
+#capture{width:var(--w);min-height:var(--h);position:relative;background:var(--paper);transform-origin:top center;transform:scale(var(--preview-scale, .62));margin-bottom:calc((var(--preview-scale, .62) - 1) * var(--h));overflow:visible}
+.bg{position:absolute;inset:0;height:var(--h);background-image:url('template-updated.png');background-repeat:no-repeat;background-size:100% 100%;background-position:top center;z-index:0}
+.extend{position:absolute;left:0;right:0;top:var(--h);bottom:0;background:var(--paper);z-index:0;display:none}
+.overlay{position:relative;z-index:2;min-height:var(--h);padding:0;font-family:Amiri,serif;color:var(--ink);direction:rtl}
+.field{position:absolute;margin:0;padding:0;border:0;background:transparent;box-shadow:none;outline:none;white-space:pre-wrap;overflow-wrap:break-word;word-break:normal;text-align:center;direction:rtl;line-height:2.05;font-size:30px}
+.num{position:absolute;width:54px;text-align:right;direction:rtl;font-family:Amiri,serif;font-size:22px;font-weight:700;line-height:1;color:var(--ink)}
+#pNisab{left:40px;top:105px}#pWeek{left:40px;top:156px}
+#pAyah{top:312px;left: 80px;width:720px;min-height:150px;display:flex;align-items:center;justify-content:center;font-size:24px;line-height:2.1
+}
+#pWord{left:295px;top:546px;width:360px;height:54px;text-align:right;font-size:24px;line-height:1.6;font-weight:700}
+#pRaghib{top:650px;left: 80px;width:715px;min-height:150px;display:flex;align-items:center;justify-content:center;text-align: right; font-size:22px;line-height:2.1
+}
+#pAshour{top:900px;left: 80px;width:715px;min-height:150px;display:flex;align-items:center;justify-content:center;text-align: right; font-size:22px;line-height:2.1
+}
+}
+#capture{scale:.31;margin-bottom:-930px}}
+
+@media(max-width:1050px){
+  .app{grid-template-columns:1fr}
+  .panel{position:static}
+  .preview-wrap{justify-content:flex-start;overflow:auto}
+  #capture{--preview-scale:.62}
+}
+@media(max-width:560px){
+  body{padding:8px}
+  .preview-wrap{justify-content:flex-start;overflow:auto}
+  #capture{--preview-scale:.48}
+}
+
+</style></head><body>
+<main class="app"><section class="panel"><h1>منشئ تذكرة الأريب</h1>
+<div class="row"><div><label>النصاب</label><input id="nisab" value="١"></div><div><label>الأسبوع</label><input id="week" value="١"></div></div>
+<label>الآية</label><textarea id="ayah">﴿وَقُلنا يا آدَمُ اسكُن أَنتَ وَزَوجُكَ الجَنَّةَ وَكُلا مِنها رَغَدًا حَيثُ شِئتُما وَلا تَقرَبا هذِهِ الشَّجَرَةَ فَتَكونا مِنَ الظّالِمينَ﴾</textarea>
+<label>حجم خط الآية</label>
+<select id="ayahSize">
+  <option value="20">20</option>
+  <option value="22">22</option>
+  <option value="24" selected>24</option>
+  <option value="26">26</option>
+  <option value="28">28</option>
+  <option value="30">30</option>
+</select>
+<label>الكلمة الغريبة</label><input id="word" value="﴿رَغَدًا﴾">
+<label>قال الراغب الأصفهاني -رحمه الله-</label><textarea id="raghib">عيش رَغَدٌ ورَغِيدٌ: طيّب واسع، قال تعالى: ﴿وَكُلا مِنْها رَغَداً﴾ [البقرة: ٣٥]، ﴿يَأْتِيها رِزْقُها رَغَداً مِنْ كُلِّ مَكانٍ﴾ [النحل: ١١٢]</textarea>
+<label>حجم خط المفردات</label>
+<select id="raghibSize">
+  <option value="18">18</option>
+  <option value="20">20</option>
+  <option value="22" selected>22</option>
+  <option value="24">24</option>
+  <option value="26">26</option>
+</select>
+<label>وقال ابن عاشور -رحمه الله-</label><textarea id="ashour">والرَّغَدُ وصْفٌ لِمَوْصُوفٍ دَلَّ عَلَيْهِ السِّياقُ أيْ أكْلًا رَغَدًا، والرَّغَدُ الهَنِيءُ الَّذِي لا عَناءَ فِيهِ ولا تَقْتِيرٌ</textarea>
+<label>حجم خط التحرير والتنوير</label>
+<select id="ashourSize">
+  <option value="18">18</option>
+  <option value="20">20</option>
+  <option value="22" selected>22</option>
+  <option value="24">24</option>
+  <option value="26">26</option>
+</select>
+    <div class="actions">
+        <button onclick="downloadImage()">حفظ الصورة</button>
+        <button class="light" onclick="shareImage()">مشاركة عبر واتساب</button>
+    </div>
+</section>
+<section class="preview-wrap"><article id="capture"><div class="bg"></div><div class="extend"></div><div class="overlay">
+<div id="pNisab" class="num">١</div><div id="pWeek" class="num">٢١</div>
+<div id="pAyah" class="field"></div><div id="pWord" class="field"></div><div id="pRaghib" class="field"></div><div id="pAshour" class="field"></div>
+<canvas id="exportCanvas" width="1080" height="1350" style="display:none"></canvas>
+</div></article></section></main><script>
+const fields=["nisab","week","ayah","word","raghib","ashour","ayahSize","raghibSize","ashourSize"];
+fields.forEach(id=>document.getElementById(id).addEventListener("input",updateCard));
+function val(id){return document.getElementById(id).value.trim()}
+function setText(id,text){document.getElementById(id).textContent=text||" "}
+function updateCard(){
+ setText("pNisab",val("nisab"));setText("pWeek",val("week"));
+ setText("pAyah",val("ayah"));setText("pWord",val("word"));
+ setText("pRaghib",val("raghib"));setText("pAshour",val("ashour"));
+ document.getElementById("pAyah").style.fontSize=document.getElementById("ayahSize").value+"px";
+ document.getElementById("pRaghib").style.fontSize=document.getElementById("raghibSize").value+"px";
+ document.getElementById("pAshour").style.fontSize=document.getElementById("ashourSize").value+"px";
+ requestAnimationFrame(adjustHeight);
+}
+function adjustHeight(){
+ const capture=document.getElementById("capture");
+ const ashour=document.getElementById("pAshour");
+ const bottom=ashour.offsetTop+ashour.scrollHeight+96;
+ const finalHeight=Math.max(1350,bottom);
+ capture.style.minHeight=finalHeight+"px";
+ document.querySelector(".extend").style.display=finalHeight>1350?"block":"none";
+}
+
+function loadImage(src){
+ return new Promise((resolve,reject)=>{
+   const img=new Image();
+   img.onload=()=>resolve(img);
+   img.onerror=reject;
+   img.src=src;
+ });
+}
+
+function cssNumber(value, fallback=0){
+ const n=parseFloat(value);
+ return Number.isFinite(n) ? n : fallback;
+}
+
+function elementBox(id){
+ const el=document.getElementById(id);
+ const cs=getComputedStyle(el);
+ return {
+   left: cssNumber(cs.left),
+   top: cssNumber(cs.top),
+   width: cssNumber(cs.width, el.offsetWidth),
+   height: cssNumber(cs.height, el.offsetHeight || cssNumber(cs.minHeight, 0)),
+   fontSize: cssNumber(cs.fontSize, 24),
+   lineHeight: cssNumber(cs.lineHeight, cssNumber(cs.fontSize, 24) * 2.05),
+   textAlign: cs.textAlign || "center",
+   fontWeight: cs.fontWeight || "400"
+ };
+}
+
+function splitArabicLines(ctx, text, maxWidth){
+ const words=(text||"").trim().split(/\s+/).filter(Boolean);
+ const lines=[];
+ let line="";
+ for(const word of words){
+   const test=line ? line+" "+word : word;
+   if(ctx.measureText(test).width <= maxWidth || !line){
+     line=test;
+   }else{
+     lines.push(line);
+     line=word;
+   }
+ }
+ if(line) lines.push(line);
+ return lines;
+}
+
+function drawWrappedText(ctx, text, box){
+ ctx.save();
+ ctx.direction="rtl";
+ ctx.textAlign = box.textAlign === "right" ? "right" : "center";
+ ctx.textBaseline="middle";
+ ctx.fillStyle="#173f49";
+ ctx.font=`${box.fontWeight || "400"} ${box.fontSize}px Amiri, serif`;
+
+ const maxWidth=box.width;
+ const lines=splitArabicLines(ctx,text,maxWidth);
+ const lineHeight=box.lineHeight || Math.round(box.fontSize*2.05);
+ const totalHeight=lines.length*lineHeight;
+ let y=box.top + (box.height/2) - (totalHeight/2) + (lineHeight/2);
+ const x = ctx.textAlign === "right" ? box.left + box.width : box.left + box.width/2;
+
+ for(const line of lines){
+   ctx.fillText(line, x, y, maxWidth);
+   y += lineHeight;
+ }
+ ctx.restore();
+}
+
+async function makeBlob(){
+ updateCard();
+ await document.fonts.ready;
+ await new Promise(r=>setTimeout(r,150));
+
+ const canvas=document.getElementById("exportCanvas");
+ const ctx=canvas.getContext("2d");
+
+ canvas.width=1080;
+ canvas.height=1350;
+
+ const bg=await loadImage("template-updated.png");
+ ctx.clearRect(0,0,1080,1350);
+ ctx.fillStyle="#fbf4e7";
+ ctx.fillRect(0,0,1080,1350);
+ ctx.drawImage(bg,0,0,1080,1350);
+
+ // Draw using the exact CSS boxes from the preview, so export matches preview.
+ const nBox=elementBox("pNisab");
+ const wBox=elementBox("pWeek");
+ ctx.save();
+ ctx.direction="rtl";
+ ctx.textAlign="right";
+ ctx.textBaseline="middle";
+ ctx.fillStyle="#173f49";
+ ctx.font=`${nBox.fontWeight || "700"} ${nBox.fontSize}px Amiri, serif`;
+ ctx.fillText(val("nisab"), nBox.left+nBox.width, nBox.top+nBox.height/2);
+ ctx.font=`${wBox.fontWeight || "700"} ${wBox.fontSize}px Amiri, serif`;
+ ctx.fillText(val("week"), wBox.left+wBox.width, wBox.top+wBox.height/2);
+ ctx.restore();
+
+ drawWrappedText(ctx, val("ayah"), elementBox("pAyah"));
+ drawWrappedText(ctx, val("word"), elementBox("pWord"));
+ drawWrappedText(ctx, val("raghib"), elementBox("pRaghib"));
+ drawWrappedText(ctx, val("ashour"), elementBox("pAshour"));
+
+ return new Promise(resolve=>canvas.toBlob(resolve,"image/png",1));
+}
+
+async function downloadImage(){const blob=await makeBlob();const url=URL.createObjectURL(blob);const a=document.createElement("a");a.href=url;a.download="tathkirat-alareeb.png";a.click();URL.revokeObjectURL(url)}
+async function shareImage(){const blob=await makeBlob();const file=new File([blob],"tathkirat-alareeb.png",{type:"image/png"});if(navigator.canShare&&navigator.canShare({files:[file]})){await navigator.share({files:[file],title:"تذكرة الأريب"})}else{await downloadImage();alert("تم حفظ الصورة. يمكنك مشاركتها من معرض الصور.")}}
+function shareWhatsapp(){window.open("https://wa.me/?text="+encodeURIComponent("تذكرة الأريب"),"_blank")}
+updateCard();
+</script></body></html>
