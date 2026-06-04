@@ -260,6 +260,7 @@ button.light{
   <h1>منشئ تذكرة الأريب</h1>
 <select id="exportSize">
   <option value="1080x1350">1080×1350</option>
+  <option value="1003x1568">1003×1568 (القالب الأصلي)</option>
   <option value="900x1125">900×1125</option>
   <option value="800x1000">800×1000</option>
 </select>
@@ -378,7 +379,8 @@ function updateCard(){
 
 function adjustHeight(){
   const capture=document.getElementById("capture");
-  capture.style.minHeight="1350px";
+  capture.style.minHeight= getComputedStyle(document.documentElement)
+  .getPropertyValue("--h");
 }
 
 function loadImage(src){
