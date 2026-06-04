@@ -349,8 +349,19 @@ function val(id){
 function setText(id,text){
   document.getElementById(id).textContent=text||" ";
 }
+  
+function updatePreviewSize(){
+  const [w,h] = document.getElementById("exportSize").value.split("x").map(Number);
 
+  document.documentElement.style.setProperty("--w", w + "px");
+  document.documentElement.style.setProperty("--h", h + "px");
+
+  document.getElementById("exportCanvas").width = w;
+  document.getElementById("exportCanvas").height = h;
+}
+  
 function updateCard(){
+  updatePreviewSize();
   setText("pNisab",val("nisab"));
   setText("pWeek",val("week"));
   setText("pAyah",val("ayah"));
