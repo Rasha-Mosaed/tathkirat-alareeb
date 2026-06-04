@@ -258,7 +258,11 @@ button.light{
 
 <section class="panel">
   <h1>منشئ تذكرة الأريب</h1>
-
+<select id="exportSize">
+  <option value="1080x1350">1080×1350</option>
+  <option value="900x1125">900×1125</option>
+  <option value="800x1000">800×1000</option>
+</select>
   <div class="row">
     <div>
       <label>النصاب</label>
@@ -335,7 +339,7 @@ button.light{
 </main>
 
 <script>
-const fields=["nisab","week","ayah","word","raghib","ashour","ayahSize","raghibSize","ashourSize"];
+const fields=["nisab","week","ayah","word","raghib","ashour","ayahSize","raghibSize","ashourSize","exportSize"];
 fields.forEach(id=>document.getElementById(id).addEventListener("input",updateCard));
 
 function val(id){
@@ -442,10 +446,19 @@ async function makeBlob(){
   const canvas=document.getElementById("exportCanvas");
   const ctx=canvas.getContext("2d");
 
-  canvas.width=1080;
-  canvas.height=1350;
+  const [exportWidth, exportHeight] =
+  document.getElementById("exportSize").value.split("x").map(Number);
+
+  canvas.width=exportWidth;
+  canvas.height=exportHeight;
+
+  const scaleX=exportWidth/1080;
+  const scaleY=exportHeight/1350;
+
+  ctx.setTransform(scaleX,0,0,scaleY,0,0);
 
   const bg=await loadImage("template-updated.png");
+
   ctx.clearRect(0,0,1080,1350);
   ctx.fillStyle="#fbf4e7";
   ctx.fillRect(0,0,1080,1350);
@@ -469,6 +482,8 @@ async function makeBlob(){
   drawWrappedText(ctx, val("word"), elementBox("pWord"));
   drawWrappedText(ctx, val("raghib"), elementBox("pRaghib"));
   drawWrappedText(ctx, val("ashour"), elementBox("pAshour"));
+
+  ctx.setTransform(1,0,0,1,0,0);
 
   return new Promise(resolve=>canvas.toBlob(resolve,"image/png",1));
 }
