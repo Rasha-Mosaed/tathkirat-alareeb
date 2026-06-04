@@ -119,13 +119,28 @@ function adjustHeight(){
  document.querySelector(".extend").style.display=finalHeight>1350?"block":"none";
 }
 async function makeBlob(){
- updateCard(); await new Promise(r=>setTimeout(r,150));
- const capture=document.getElementById("capture");
- const oldScale=capture.style.scale, oldMargin=capture.style.marginBottom;
- capture.style.scale="1"; capture.style.marginBottom="0"; adjustHeight();
- const canvas=await html2canvas(capture,{scale:2,backgroundColor:"#fbf4e7",useCORS:true});
- capture.style.scale=oldScale; capture.style.marginBottom=oldMargin;
- return new Promise(r=>canvas.toBlob(r,"image/png",1));
+  updateCard();
+  await document.fonts.ready;
+  await new Promise(r=>setTimeout(r,300));
+
+  const capture=document.getElementById("capture");
+  const oldScale=capture.style.scale;
+  const oldMargin=capture.style.marginBottom;
+
+  capture.style.scale="1";
+  capture.style.marginBottom="0";
+  adjustHeight();
+
+  const blob = await htmlToImage.toBlob(capture, {
+    backgroundColor: "#fbf4e7",
+    pixelRatio: 2,
+    cacheBust: true
+  });
+
+  capture.style.scale=oldScale;
+  capture.style.marginBottom=oldMargin;
+
+  return blob;
 }
 async function downloadImage(){const blob=await makeBlob();const url=URL.createObjectURL(blob);const a=document.createElement("a");a.href=url;a.download="tathkirat-alareeb.png";a.click();URL.revokeObjectURL(url)}
 async function shareImage(){const blob=await makeBlob();const file=new File([blob],"tathkirat-alareeb.png",{type:"image/png"});if(navigator.canShare&&navigator.canShare({files:[file]})){await navigator.share({files:[file],title:"تذكرة الأريب"})}else{await downloadImage();alert("تم حفظ الصورة. يمكنك مشاركتها من معرض الصور.")}}
